@@ -9,29 +9,18 @@ services:
       POSTGRES_DB: TaskDB
       POSTGRES_USER: user-test
       POSTGRES_PASSWORD: teste123
-    networks:
-      - app_network
     ports:
       - 5432:5432
 
   tasklist-app:
-    build: 
-      context: .
-    networks:
-      - app_network
-    environment:
-      ConnectionStrings__TaskConnection: "Host=postgres;Port=5432;Username=user-test;Password=teste123;Database=TaskDB"
+    build: .
     ports:
-      - 5000:80
+      - 5000:5000
+      - 5001:5001
     depends_on:
       - postgres
     entrypoint: ["sh", "-c", "dotnet ef database update --project TaskList.Data/TaskList.Data.csproj --startup-project TaskList/TaskList.API.csproj && dotnet TaskList.API.dll"]
 
-
 volumes:
   postgres_data:
     driver: local
-
-networks:
-  app_network:
-    driver: bridge

@@ -1,6 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
+EXPOSE 5000
+EXPOSE 5001
+
 COPY TaskList/TaskList.sln ./
 COPY TaskList/TaskList.API.csproj ./TaskList/
 COPY TaskList.Data/TaskList.Data.csproj ./TaskList.Data/
@@ -32,7 +35,5 @@ RUN dotnet restore "/app/TaskList/TaskList.sln"
 
 RUN dotnet tool install --version 6.0.35 --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
-
-EXPOSE 80
 
 CMD ["dotnet", "TaskList.API.dll"]
